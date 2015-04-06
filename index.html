@@ -11,7 +11,7 @@
 
     window.onload = function() {
 
-        var game = new Phaser.Game(800, 800, Phaser.AUTO, '', { preload: preload, create: create, update:update });
+        var game = new Phaser.Game(700, 700, Phaser.AUTO, '', { preload: preload, create: create, update:update });
 
         function preload () {
 
@@ -24,8 +24,9 @@
          //   game.physics.startSystem(Phaser.Physics.ARCADE);
             var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
             tileGroup = game.add.physicsGroup(Phaser.Physics.Arcade);
-            for(var i=0; i<7; i++){
-                var tile = tileGroup.create(50, 50+100*i, 'tile');
+            for(var i=0; i<4; i++){
+                var p = pospx(i+1, i+1);
+                var tile = tileGroup.create(p.x, p.y, 'tile');
                 tiles[i] = tile;
                 game.physics.arcade.enable(tile);
                 tile.anchor.setTo(0.5, 0.5);
@@ -42,12 +43,12 @@
             tileGroup.setAll('body.collideWorldBounds', true);
             tileGroup.setAll('body.bounce.x', 1);
             tileGroup.setAll('body.bounce.y', 1);
-            tileGroup.setAll('body.velocity.x', 100);
-            tileGroup.setAll('body.velocity.y', 100);
             logo.anchor.setTo(0.5, 0.5);
 
         }
-
+        function pospx(x, y){
+            return {x:170*x-75, y:170*y-75};
+        }
         function update() {
             for(var i=0; i<tiles.length; i++){
                 texts[i].x = tiles[i].x; texts[i].y=tiles[i].y;
