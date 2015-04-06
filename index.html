@@ -19,13 +19,13 @@
             game.load.image('tile', 'ceramic.jpg');
 
         }
-        var tileGroup, tiles = [], texts = [], swiping, canMove, direction, speed = 100;
+        var tileGroup, tiles = [], swiping, canMove, direction, speed = 100;
         function create () {
          //   game.physics.startSystem(Phaser.Physics.ARCADE);
             var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
             tileGroup = game.add.physicsGroup(Phaser.Physics.Arcade);
             for(var i=0; i<4; i++){
-                var p = pospx(i+1, i+1);
+                var p = pospx(i+1, 1);
                 var tile = tileGroup.create(p.x, p.y, 'tile');
                 tiles[i] = tile;
                 game.physics.arcade.enable(tile);
@@ -34,15 +34,15 @@
                 var style = {font:"32px Arial", fill:"#aa0000", align:"center"};
                 var text = game.add.text(0,0, "0", style);
                 text.anchor.set(0.5);
-                texts[i] = text;
+                tiles[i].texts = text;
+                tiles[i].points = 1;
            //     tile.body.collideWorldBounds = true;
              //   tile.body.bounce.setTo(1,1);
                // tile.body.velocity.setTo(100,100);
 
             }
             tileGroup.setAll('body.collideWorldBounds', true);
-            tileGroup.setAll('body.bounce.x', 1);
-            tileGroup.setAll('body.bounce.y', 1);
+
             logo.anchor.setTo(0.5, 0.5);
 
         }
@@ -51,9 +51,10 @@
         }
         function update() {
           for(var i=0; i<tiles.length; i++){
-              texts[i].x = tiles[i].x; texts[i].y=tiles[i].y;
+              tiles[i].texts.text = ""+tiles[i].points;
+              tiles[i].texts.x = tiles[i].x; tiles[i].texts.y=tiles[i].y;
           }
-          game.physics.arcade.collide(tileGroup);
+          game.physics.arcade.collide(tileGroup, tileGroup, onCollision);
 
           if (canMove) {
           		canMove = false;
@@ -136,6 +137,16 @@
 
     		swiping = true;
   	  }
+    }
+    function onCollision(a, b) {
+      a.body.velocity.setTo(0,0);
+      b.body.velocity.setTo(0,0);
+
+      if(a.points === b.points){
+        b.texts.kill();
+        b.kill();
+        a.points *= 2;
+      }
     }
   };
 
