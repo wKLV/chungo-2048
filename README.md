@@ -8,3 +8,4 @@ PUASE
 15:50 Positions 1
 16:00 Swiping & moving (copied from http://www.html5gamedevs.com/topic/5449-directional-swipe/)
 16:20 Basic mechanics
+17:20 Positions cool

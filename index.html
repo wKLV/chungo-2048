@@ -19,13 +19,13 @@
             game.load.image('tile', 'ceramic.jpg');
 
         }
-        var tileGroup, tiles = [], swiping, canMove, direction, speed = 100;
+        var tileGroup, tiles = [], swiping, canMove, direction, speed = 100, stopped = false;
         function create () {
          //   game.physics.startSystem(Phaser.Physics.ARCADE);
             var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
             tileGroup = game.add.physicsGroup(Phaser.Physics.Arcade);
             for(var i=0; i<4; i++){
-                var p = pospx(i+1, 1);
+                var p = pospx(1, i+1);
                 var tile = tileGroup.create(p.x, p.y, 'tile');
                 tiles[i] = tile;
                 game.physics.arcade.enable(tile);
@@ -49,10 +49,22 @@
         function pospx(x, y){
             return {x:170*x-75, y:170*y-75};
         }
+
+        function pxpos(x, y){
+          return {x:Math.ceil(x/175), y:Math.ceil(y/175)};
+        }
         function update() {
           for(var i=0; i<tiles.length; i++){
-              tiles[i].texts.text = ""+tiles[i].points;
-              tiles[i].texts.x = tiles[i].x; tiles[i].texts.y=tiles[i].y;
+            var tile = tiles[i];
+              if(!stopped && tile.body.velocity.x === 0 && tile.body.velocity.y === 0) stopped = true;
+
+              tile.texts.text = ""+tile.points;
+              if(tile.x < 95) { tile.x = 95; tile.body.velocity.setTo(0,0); }
+              else if(tile.x>605){ tile.x = 605; tile.body.velocity.setTo(0,0); }
+              if(tile.y < 95) { tile.y = 95; tile.body.velocity.setTo(0,0); }
+              else if(tile.y>605) { tile.y = 605; tile.body.velocity.setTo(0,0); }
+
+              tile.texts.x = tile.x; tile.texts.y=tile.y;
           }
           game.physics.arcade.collide(tileGroup, tileGroup, onCollision);
 
@@ -80,10 +92,11 @@
           				tiles[i].body.velocity.x = -speed;
           				tiles[i].body.velocity.y = 0;
           			}
+                stopped = false;
           		}
           	}
 
-          onSwipe();
+          if(stopped) onSwipe();
         	if (swiping){
         		swiping = false;
         		if(firstPointX > lastPointX){
@@ -139,13 +152,50 @@
   	  }
     }
     function onCollision(a, b) {
+      var velx = a.body.velocity.x , vely = a.body.velocity.y;
+      if(velx===0) velx = b.body.velocity.x;
+      if(vely===0) vely = b.body.velocity.y;
+
+      if(velx>0) velx = 1; else if(velx<0) velx = -1;
+      if(vely>0) vely = 1; else if(vely<0) vely = -1;
+
       a.body.velocity.setTo(0,0);
       b.body.velocity.setTo(0,0);
 
       if(a.points === b.points){
+        a.points *= 2;
+        var p;
+        if (a.position.x > b.position.x) {
+          if(velx === 1)
+            p = pxpos(a.position.x, a.position.y);
+          else if(velx === -1)
+            p = pxpos(b.position.x, b.position.y);
+         } else if(a.position.x < b.position.x) {
+          if(velx=== 1)
+            p = pxpos(b.position.x, b.position.y);
+          else if(velx === -1)
+            p = pxpos(a.position.x, a.position.y);
+          }
+          else if (a.position.y > b.position.y) {
+            if(vely === 1)
+              p = pxpos(a.position.x, a.position.y);
+            else if(vely === -1)
+              p = pxpos(b.position.x, b.position.y);
+           } else if(a.position.y < b.position.y) {
+            if(vely=== 1)
+              p = pxpos(b.position.x, b.position.y);
+            else if(vely === -1)
+              p = pxpos(a.position.x, a.position.y);
+            }
+    //    if (a.position.y > b.position.y && vely=== 1) p = pxpos(b.position.x, b.position.y);
+  //      else if(a.position.y < b.position.y && vely=== -1) p = pxpos(a.position.x, a.position.y);
+
+      //  var ap = pxpos(a.position.x, a.position.y), bp = pxpos(b.position.x, b.position.y);
+
+
+        a.position = pospx(p.x, p.y)
         b.texts.kill();
         b.kill();
-        a.points *= 2;
       }
     }
   };
