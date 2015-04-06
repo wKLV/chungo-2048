@@ -19,31 +19,40 @@
             game.load.image('tile', 'ceramic.jpg');
 
         }
-        var tiles;
+        var tileGroup, tiles = [], texts = [];
         function create () {
          //   game.physics.startSystem(Phaser.Physics.ARCADE);
             var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
-            tiles = game.add.physicsGroup(Phaser.Physics.Arcade);
+            tileGroup = game.add.physicsGroup(Phaser.Physics.Arcade);
             for(var i=0; i<7; i++){
-                var tile = tiles.create(50, 50+100*i, 'tile');
+                var tile = tileGroup.create(50, 50+100*i, 'tile');
+                tiles[i] = tile;
                 game.physics.arcade.enable(tile);
                 tile.anchor.setTo(0.5, 0.5);
-                tile.body.collideWorldBounds = true;
-                tile.body.bounce.setTo(1,1);
-                tile.body.velocity.setTo(100,100);
+
+                var style = {font:"32px Arial", fill:"#aa0000", align:"center"};
+                var text = game.add.text(0,0, "0", style);
+                text.anchor.set(0.5);
+                texts[i] = text;
+           //     tile.body.collideWorldBounds = true;
+             //   tile.body.bounce.setTo(1,1);
+               // tile.body.velocity.setTo(100,100);
 
             }
-       //     tiles.setAll('body.collideWorldBounds', true);
-       //     tiles.setAll('body.bounce.x', 1);
-       //     tiles.setAll('body.bounce.y', 1);
-        //    tiles.setAll('body.velocity.x', 100);
-        //    tiles.setAll('body.velocity.y', 100);
+            tileGroup.setAll('body.collideWorldBounds', true);
+            tileGroup.setAll('body.bounce.x', 1);
+            tileGroup.setAll('body.bounce.y', 1);
+            tileGroup.setAll('body.velocity.x', 100);
+            tileGroup.setAll('body.velocity.y', 100);
             logo.anchor.setTo(0.5, 0.5);
 
         }
 
         function update() {
-            game.physics.arcade.collide(tiles);
+            for(var i=0; i<tiles.length; i++){
+                texts[i].x = tiles[i].x; texts[i].y=tiles[i].y;
+            }
+            game.physics.arcade.collide(tileGroup);
         }
 
     };
