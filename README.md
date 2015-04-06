@@ -10,4 +10,6 @@ PUASE
 16:20 Basic mechanics
 17:20 Positions cool
 17:45 Graphics & fixes
-18:20 semi Playable game 
+18:20 semi Playable game
+22:20 Have been fixing bugs AND THEY ARE STILL HERE
+PAUSE
