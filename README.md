@@ -6,3 +6,4 @@ This is a 16 hours challenge to program 2048 that i’m going to try now.
 PUASE
 15:35 UNPUASE
 15:50 Positions 1
+16:00 Swiping & moving (copied from http://www.html5gamedevs.com/topic/5449-directional-swipe/)

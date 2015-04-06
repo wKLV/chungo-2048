@@ -19,7 +19,7 @@
             game.load.image('tile', 'ceramic.jpg');
 
         }
-        var tileGroup, tiles = [], texts = [];
+        var tileGroup, tiles = [], texts = [], swiping, canMove, direction, speed = 100;
         function create () {
          //   game.physics.startSystem(Phaser.Physics.ARCADE);
             var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
@@ -50,13 +50,94 @@
             return {x:170*x-75, y:170*y-75};
         }
         function update() {
-            for(var i=0; i<tiles.length; i++){
-                texts[i].x = tiles[i].x; texts[i].y=tiles[i].y;
-            }
-            game.physics.arcade.collide(tileGroup);
+          for(var i=0; i<tiles.length; i++){
+              texts[i].x = tiles[i].x; texts[i].y=tiles[i].y;
+          }
+          game.physics.arcade.collide(tileGroup);
+
+          if (canMove) {
+          		canMove = false;
+
+          		for (var i=0; i < tiles.length; i++) {
+          			if (direction == 0) {
+          				//up
+          				tiles[i].body.velocity.y = -speed;
+          				tiles[i].body.velocity.x = 0;
+
+          			} else if (direction == 1) {
+          				//right
+          				tiles[i].body.velocity.x = speed;
+          				tiles[i].body.velocity.y = 0;
+
+          			} else if (direction == 2) {
+          				//down
+          				tiles[i].body.velocity.y = speed;
+          				tiles[i].body.velocity.x = 0;
+
+          			} else if (direction == 3) {
+          				//left
+          				tiles[i].body.velocity.x = -speed;
+          				tiles[i].body.velocity.y = 0;
+          			}
+          		}
+          	}
+
+          onSwipe();
+        	if (swiping){
+        		swiping = false;
+        		if(firstPointX > lastPointX){
+
+        			checkSwipeX = firstPointX - lastPointX;
+
+        			if ( checkSwipeX >= 150 ) {
+        				canMove = true;
+        				direction = 3;
+        			}
+
+        		} else if(firstPointX < lastPointX){
+
+        			checkSwipeX = lastPointX - firstPointX;
+
+        			if ( checkSwipeX >= 150 ) {
+        				canMove = true;
+        				direction = 1;
+        			}
+        		}
+
+        		if(firstPointY > lastPointY){
+
+        			checkSwipeY = firstPointY - lastPointY;
+
+        			if ( checkSwipeY >= 150 ) {
+        				canMove = true;
+        				direction = 0;
+        			}
+
+        		} else if(firstPointY < lastPointY){
+
+        			checkSwipeY = lastPointY - firstPointY;
+
+        			if ( checkSwipeY >= 150 ) {
+        				canMove = true;
+        				direction = 2;
+        			}
+        		}
+	         }
         }
 
-    };
+    function onSwipe() {
+    	if (Phaser.Point.distance(game.input.activePointer.position, game.input.activePointer.positionDown) > 150 && game.input.activePointer.duration > 100 && game.input.activePointer.duration < 250)
+    	{
+    		firstPointX = game.input.activePointer.positionDown.x;
+    		firstPointY = game.input.activePointer.positionDown.y;
+
+    		lastPointX = game.input.activePointer.position.x;
+    		lastPointY = game.input.activePointer.position.y;
+
+    		swiping = true;
+  	  }
+    }
+  };
 
     </script>
 
