@@ -10,3 +10,4 @@ PUASE
 16:20 Basic mechanics
 17:20 Positions cool
 17:45 Graphics & fixes
+18:20 semi Playable game 
