@@ -9,3 +9,4 @@ PUASE
 16:00 Swiping & moving (copied from http://www.html5gamedevs.com/topic/5449-directional-swipe/)
 16:20 Basic mechanics
 17:20 Positions cool
+17:45 Graphics & fixes

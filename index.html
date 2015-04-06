@@ -15,17 +15,17 @@
 
         function preload () {
 
-            game.load.image('logo', 'phaser.png');
-            game.load.image('tile', 'ceramic.jpg');
+            game.load.image('logo', 'background.jpg');
+            game.load.image('tile', 'ceramic.png');
 
         }
-        var tileGroup, tiles = [], swiping, canMove, direction, speed = 100, stopped = false;
+        var tileGroup, tiles = [], swiping, canMove, direction, speed = 100, stopped = true;
         function create () {
          //   game.physics.startSystem(Phaser.Physics.ARCADE);
             var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
             tileGroup = game.add.physicsGroup(Phaser.Physics.Arcade);
             for(var i=0; i<4; i++){
-                var p = pospx(1, i+1);
+                var p = pospx(i+1, i+1);
                 var tile = tileGroup.create(p.x, p.y, 'tile');
                 tiles[i] = tile;
                 game.physics.arcade.enable(tile);
@@ -54,9 +54,10 @@
           return {x:Math.ceil(x/175), y:Math.ceil(y/175)};
         }
         function update() {
+          stopped =true;
           for(var i=0; i<tiles.length; i++){
             var tile = tiles[i];
-              if(!stopped && tile.body.velocity.x === 0 && tile.body.velocity.y === 0) stopped = true;
+              if(tile.body.velocity.x !== 0 || tile.body.velocity.y !== 0) stopped = false;
 
               tile.texts.text = ""+tile.points;
               if(tile.x < 95) { tile.x = 95; tile.body.velocity.setTo(0,0); }
@@ -194,8 +195,13 @@
 
 
         a.position = pospx(p.x, p.y)
+
+        var i = tiles.indexOf(b);
+        tiles.splice(i, 1);
+
         b.texts.kill();
         b.kill();
+
       }
     }
   };
