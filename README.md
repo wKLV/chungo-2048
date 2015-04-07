@@ -18,4 +18,5 @@ PAUSE
 17:05 UNPUASE
 17:20 Bug fix
 18:53: Awesome bug fix
-10:06: Sound
+19:06: Sound
+10:30 Images & such

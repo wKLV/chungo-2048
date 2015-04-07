@@ -15,8 +15,14 @@ window.onload = function() {
 
   function preload () {
 
-    game.load.image('logo', 'background.jpg');
-    game.load.image('tile', 'ceramic.png');
+    game.load.image('logo', 'bg_desert.png');
+    game.load.image('tile', 'tile0.png');
+    game.load.image('tile1', 'tile1.png');
+    game.load.image('tile2', 'tile2.png');
+    game.load.image('tile3', 'tile3.png');
+    game.load.image('tile4', 'tile4.png');
+    game.load.image('tile5', 'tile5.png');
+
     game.load.audio('back', ['music.ogg', 'music.mp3']);
     game.load.audio('step', ['step2.wav']);
 
@@ -35,6 +41,7 @@ window.onload = function() {
       tiles[i] = tile;
       game.physics.arcade.enable(tile);
       tile.anchor.setTo(0.5, 0.5);
+      tile.scale.setTo(3,3);
 
       tile.body.collideWorldBounds = true;
       var style = {font:"32px Arial", fill:"#aa0000", align:"center"};
@@ -215,6 +222,7 @@ window.onload = function() {
     }
     var px = pospx(p.x, p.y);
     var tile = tileGroup.create(px.x, px.y, 'tile');
+    tile.scale.setTo(3,3);
     tile.old = {x:p.x-1, y:p.y-1};
     map[p.x-1][p.y-1] = tile;
 
@@ -233,7 +241,7 @@ window.onload = function() {
     tile.points = 1;
   }
  function render () {
-   game.debug.soundInfo(collisionSound, 20, 32);
+   //game.debug.soundInfo(collisionSound, 20, 32);
  }
   function onSwipe() {
     if (Phaser.Point.distance(game.input.activePointer.position, game.input.activePointer.positionDown) > 150 && game.input.activePointer.duration > 100 && game.input.activePointer.duration < 250)
@@ -319,6 +327,11 @@ window.onload = function() {
       }*/
     //  else console.log("ERROR  a.x:"+a.old.x+", a.y:"+a.old.y+"; b.x:"+b.old.x+", b.y:"+b.old.y);
       a.points *= 2;
+      if(a.points>=1024) a.loadTexture("tile5");
+      else if(a.points>=256) a.loadTexture("tile4");
+      else if(a.points>=64) a.loadTexture("tile3");
+      else if(a.points>=16) a.loadTexture("tile2");
+      else if(a.points>=4) a.loadTexture("tile1");
 
       a.position = pospx(p.x, p.y)
       map[none.x-1][none.y-1] = false;
