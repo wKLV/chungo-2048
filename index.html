@@ -261,32 +261,34 @@ window.onload = function() {
     if(a.points === b.points){
 
       var p = pxpos(a.x, a.y);
+      var none = pxpos(b.x, b.y);
       if (a.x > b.x) {
         if(velx === 1)
-        p = pxpos(a.x, a.y);
+        p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
         else if(velx === -1)
-        p = pxpos(b.x, b.y);
+        p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
       } else if(a.x < b.x) {
         if(velx=== 1)
-        p = pxpos(b.x, b.y);
+        p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
         else if(velx === -1)
-        p = pxpos(a.x, a.y);
+        p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
       }
       else if (a.y > b.y) {
         if(vely === 1)
-        p = pxpos(a.x, a.y);
+        p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
         else if(vely === -1)
-        p = pxpos(b.x, b.y);
+        p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
       } else if(a.y < b.y) {
         if(vely=== 1)
-        p = pxpos(b.x, b.y);
+        p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
         else if(vely === -1)
-        p = pxpos(a.x, a.y);
+        p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
       }
       else console.log("ERROR  a.x:"+a.old.x+", a.y:"+a.old.y+"; b.x:"+b.old.x+", b.y:"+b.old.y);
       a.points *= 2;
 
       a.position = pospx(p.x, p.y)
+      map[none.x-1][none.y-1] = false;
       yankposition(a);
 
       var i = tiles.indexOf(b);
@@ -299,7 +301,6 @@ window.onload = function() {
   function removeExtras(){
     if(extras.length){
       for(var i=0; i<extras.length; i++){
-        map[tiles[i].old.x][tiles[i].old.y] = false;
         extras[i].texts.kill();
         extras[i].kill();
         tiles.splice(tiles.indexOf(extras[i]), 1);
