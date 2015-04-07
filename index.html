@@ -11,15 +11,18 @@
 
 window.onload = function() {
 
-  var game = new Phaser.Game(860, 860, Phaser.CANVAS, '', { preload: preload, create: create, update:update });
+  var game = new Phaser.Game(860, 860, Phaser.CANVAS, '', { preload: preload, create: create, update:update, render:render });
 
   function preload () {
 
     game.load.image('logo', 'background.jpg');
     game.load.image('tile', 'ceramic.png');
+    game.load.audio('back', ['music.ogg', 'music.mp3']);
+    game.load.audio('step', ['step2.wav']);
+
 
   }
-  var tileGroup, tiles = [], map =[], swiping, canMove, direction, speed = 500, stopped = true;
+  var tileGroup, tiles = [], map =[], swiping, canMove, direction, speed = 500, stopped = true, collisionSound;
   function create () {
     this.game.stage.disableVisibilityChange = true;
     //   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -55,6 +58,10 @@ window.onload = function() {
 
     logo.anchor.setTo(0.5, 0.5);
 
+    music = game.add.audio('back', 1, true);
+    music.play();
+    collisionSound = game.add.audio('step');
+
   }
   function pospx(x, y){
     return {x:200*x-75, y:200*y-75};
@@ -71,7 +78,10 @@ window.onload = function() {
       if(tile.body.velocity.x !== 0 || tile.body.velocity.y !== 0) stopped = false;
 
       tile.texts.text = ""+tile.points;
-      if(tile.x < 125 || tile.x>755 || tile.y < 125 || tile.y>755) yankposition(tile);
+      if(tile.x < 125 || tile.x>755 || tile.y < 125 || tile.y>755){
+        yankposition(tile);
+        collisionSound.play();
+      }
 
       tile.texts.x = tile.x; tile.texts.y=tile.y;
     }
@@ -222,7 +232,9 @@ window.onload = function() {
     tile.texts = text;
     tile.points = 1;
   }
-
+ function render () {
+   game.debug.soundInfo(collisionSound, 20, 32);
+ }
   function onSwipe() {
     if (Phaser.Point.distance(game.input.activePointer.position, game.input.activePointer.positionDown) > 150 && game.input.activePointer.duration > 100 && game.input.activePointer.duration < 250)
     {
