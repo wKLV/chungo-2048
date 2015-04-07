@@ -19,4 +19,5 @@ PAUSE
 17:20 Bug fix
 18:53: Awesome bug fix
 19:06: Sound
-10:30 Images & such
+19:30 Images & such
+20:00 Images solved

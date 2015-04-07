@@ -41,10 +41,9 @@ window.onload = function() {
       tiles[i] = tile;
       game.physics.arcade.enable(tile);
       tile.anchor.setTo(0.5, 0.5);
-      tile.scale.setTo(3,3);
 
       tile.body.collideWorldBounds = true;
-      var style = {font:"32px Arial", fill:"#aa0000", align:"center"};
+      var style = {font:"32px Arial", fill:"#44444", align:"center"};
       var text = game.add.text(0,0, "0", style);
       text.anchor.set(0.5);
       tiles[i].texts = text;
@@ -67,7 +66,7 @@ window.onload = function() {
 
     music = game.add.audio('back', 1, true);
     music.play();
-    collisionSound = game.add.audio('step');
+    collisionSound = game.add.audio('step', 0.5);
 
   }
   function pospx(x, y){
@@ -222,7 +221,6 @@ window.onload = function() {
     }
     var px = pospx(p.x, p.y);
     var tile = tileGroup.create(px.x, px.y, 'tile');
-    tile.scale.setTo(3,3);
     tile.old = {x:p.x-1, y:p.y-1};
     map[p.x-1][p.y-1] = tile;
 
@@ -234,7 +232,7 @@ window.onload = function() {
     tile.body.collideWorldBounds = true;
   //  tile.body.bounce.setTo(1,1);
 
-    var style = {font:"32px Arial", fill:"#aa0000", align:"center"};
+    var style = {font:"32px Arial", fill:"#44444", align:"center"};
     var text = game.add.text(0,0, "0", style);
     text.anchor.set(0.5);
     tile.texts = text;
