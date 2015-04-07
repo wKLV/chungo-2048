@@ -144,7 +144,7 @@ window.onload = function() {
           direction = 2;
         }
       }
-      if(Math.random()>0.5) tospawn.push([]);
+      if(Math.random()>0.0) tospawn.push([]);
     }
   }
   function norm(a) {
@@ -156,8 +156,8 @@ window.onload = function() {
   function yankposition(tile){
     map[tile.old.x][tile.old.y] = false;
     if(tile.x < 0 || tile.x>860 || tile.y < 0 || tile.y>860){
-       console.log("TILE x"+tile.old.x+" y"+tile.old.y);
-       console.log("is in x:"+tile.x,", y:"+tile.y);
+  //     console.log("TILE x"+tile.old.x+" y"+tile.old.y);
+  //     console.log("is in x:"+tile.x,", y:"+tile.y);
      }
     var p = pxpos(tile.x, tile.y);
   /*  while (map[p.x-1][p.y-1] !== false) {
@@ -178,6 +178,7 @@ window.onload = function() {
       if(!(map[0][3]&&map[1][3]&&map[2][3]&&map[3][3]))
       do{
         p = {x:Math.ceil(Math.random()*4), y:4}
+        console.log(p);
       } while(map[p.x-1][p.y-1]!== false);
       else return;
     }
@@ -246,8 +247,8 @@ window.onload = function() {
   //  if(a.x===b.x && a.y === b.y)console.error("ERROR  a.x:"+olda.x+", a.y:"+olda.y+"; b.x:"+oldb.x+", b.y:"+oldb.y);
 
   //  console.log("collision x"+a.x+" y"+a.y+"   x"+b.x+" y"+b.y);
-    yankposition(a);
-    yankposition(b);
+  //  yankposition(a);
+  //  yankposition(b);
 
     //    if (a.position.y > b.position.y && vely=== 1) p = pxpos(b.position.x, b.position.y);
     //      else if(a.position.y < b.position.y && vely=== -1) p = pxpos(a.position.x, a.position.y);
@@ -262,6 +263,26 @@ window.onload = function() {
 
       var p = pxpos(a.x, a.y);
       var none = pxpos(b.x, b.y);
+      if(direction === 0){
+        if(a.y<b.y) p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
+        else if(a.y>b.y) p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
+        else return;
+      }
+      else if (direction === 1) {
+        if(a.x>b.x) p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
+        else if(a.x<b.x) p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
+        else return;
+      }
+      else if(direction === 2){
+        if(a.y>b.y) p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
+        else if(a.y<b.y) p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
+        else return;
+      }
+      else if (direction === 3) {
+        if(a.x<b.x) p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
+        else return;
+      }
+      /*
       if (a.x > b.x) {
         if(velx === 1)
         p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
@@ -283,8 +304,8 @@ window.onload = function() {
         p = pxpos(b.x, b.y), none = pxpos(a.x, a.y);
         else if(vely === -1)
         p = pxpos(a.x, a.y), none = pxpos(b.x, b.y);
-      }
-      else console.log("ERROR  a.x:"+a.old.x+", a.y:"+a.old.y+"; b.x:"+b.old.x+", b.y:"+b.old.y);
+      }*/
+    //  else console.log("ERROR  a.x:"+a.old.x+", a.y:"+a.old.y+"; b.x:"+b.old.x+", b.y:"+b.old.y);
       a.points *= 2;
 
       a.position = pospx(p.x, p.y)
@@ -295,6 +316,9 @@ window.onload = function() {
       extras.push(b);
 
       if(Math.random()>0.2) tospawn.push([]);
+    }
+    else{
+      yankposition(a); yankposition(b);
     }
   }}
   var extras = [], tospawn=[];
@@ -308,9 +332,9 @@ window.onload = function() {
       extras = [];
       for(var it=0; it<tiles.length; it++) {
         var i = tiles[it];
-        console.log("tile "+i.old.x+","+i.old.y+" is in x:"+i.x+", y:"+i.y);
+  //      console.log("tile "+i.old.x+","+i.old.y+" is in x:"+i.x+", y:"+i.y);
       }
-      console.log("-------");
+    //  console.log("-------");
     }
     if(tospawn.length){
       for(var it=0; it<tospawn.length; it++)
@@ -318,9 +342,9 @@ window.onload = function() {
       tospawn = [];
       for(var it=0; it<tiles.length; it++) {
         var i = tiles[it];
-        console.log("tile "+i.old.x+","+i.old.y+" is in x:"+i.x+", y:"+i.y);
+    //    console.log("tile "+i.old.x+","+i.old.y+" is in x:"+i.x+", y:"+i.y);
       }
-      console.log("-------");    console.log("-------");
+    //  console.log("-------");    console.log("-------");
     }
 
   }
